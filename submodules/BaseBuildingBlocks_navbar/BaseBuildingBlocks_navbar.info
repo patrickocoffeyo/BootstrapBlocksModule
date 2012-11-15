@@ -1,0 +1,8 @@
+name = Base Building Blocks Navbar
+description = Allows you to print nabars in your theme, provides a customizeable navbar block, and provides an administration navbar block with a full permission set.
+version = 7.x-1.0.0
+package = Base Building Blocks
+core = 7.x
+
+dependancies[] = BaseBuildingBlocks
+dependancies[] = menu

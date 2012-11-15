@@ -1,0 +1,131 @@
+<?php
+//Includes
+include('includes/admin.inc');
+
+/**
+ * Impliments hook_menu
+ */
+function BaseBuildingBlocks_menu_menu() {
+  $items = array();
+  $items['admin/appearance/basebuildingblocks/menu'] = array(
+    'title' => t('Menu Settings'),
+    'page arguments' => array(3),
+    'access arguments' => array('administer themes'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('BaseBuildingBlocks_menu_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+/**
+ * Implements hook_block_info().
+ */
+function BaseBuildingBlocks_menu_block_info() {
+  $blocks = array();
+  $blocks['standard_menu'] = array(
+    'info' => t('Bootstrap Menu'),
+    'region' => 'menu',
+  );
+  $blocks['mobile_menu'] = array(
+    'info' => t('Mobile Menu'),
+    'region' => 'menu',
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implimenting hook_block_view()
+ */
+function BaseBuildingBlocks_menu_block_view($delta = '')  {
+  $block = array();
+  switch ($delta) {
+    case 'standard_menu':
+      $block['subject'] = t(''); //Leave it empty, a menu doesn't need a title :)
+      $block['content'] = BaseBuildingBlocks_menu_build_menu(variable_get('standard_menu'));
+      break;
+    case 'mobile_menu':
+      $block['subject'] = t(''); //Leave it empty, a menu doesn't need a title :)
+      $block['content'] = BaseBuildingBlocks_menu_build_menu(variable_get('mobile_menu'));
+
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function BaseBuildingBlocks_menu_block_configure($delta='') {
+  $form = array();
+  
+  //Grab the menus within the system, and put them in an array we can use
+  $menus = menu_get_names();
+  $menu_options = array();
+  foreach ($menus as $menu) {
+    $menu_options[$menu] = $menu;
+  }
+  
+  switch($delta) {
+    case 'menu':
+      $form['standard_menu'] = array(
+        '#type' => 'select',
+        '#title' => t('Source Menu'),
+        '#options' => $menu_options,
+        '#default_value' => variable_get('standard_menu'),
+      );
+      break;
+    case 'mobile_menu':
+      $form['mobile_menu'] = array(
+        '#type' => 'select',
+        '#title' => t('Source Menu'),
+        '#options' => $menu_options,
+        '#default_value' => variable_get('mobile_menu'),
+      );
+      break;
+
+  }
+  return $form;
+}
+
+/**
+ * Build a menu
+ * @param $menu_name
+ *   Name of menu to pull from Drupal/build
+ */
+function BaseBuildingBlocks_menu_build_menu($menu_name) {
+  return theme('standard_menu', array(
+    'menu' => menu_tree_all_data($menu_name),
+  ));
+}
+
+/**
+ * Returns TRUE if passed in path is current path
+ * @params $path
+ *   Path to check against the current path
+ * @return
+ *   BOOL TRUE or FALSE value, indicating whether or not the current menu item is active
+ */
+function BaseBuildingBlocks_menu_is_active($path) {
+  if ($path == $_GET['q'] || (drupal_is_front_page() && $path === '<front>')) {
+    return TRUE;
+  }
+  
+  return FALSE;
+}
+
+/**
+ * Implimenting hook_theme();
+ */
+function BaseBuildingBlocks_menu_theme() {
+  return array(
+    'standard_menu' => array(
+      'template' => 'templates/standard_menu',
+      'variables' => array(
+        'menu' => '',
+      ),
+    ),
+  );
+}

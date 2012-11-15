@@ -1,0 +1,35 @@
+<?php
+/**
+ * Implimenting hook_enable()
+ */
+function BaseBuildingBlocks_wysiwyg_enable() {
+  $wysiwyg_format = array(
+    'format' => 'wysiwyg',
+    'name' => 'WYSIWYG',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $wysiwyg_format = (object) $wysiwyg_format;
+  filter_format_save($wysiwyg_format);
+
+  //Allow authenticated and anonymous users to use the WYSIWYG editor
+  $wysiwyg_permission = filter_permission_name($wysiwyg_format);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array($wysiwyg_permission));
+  user_role_grant_permissions(variable_get('user_admin_role'), array($wysiwyg_permission));
+}

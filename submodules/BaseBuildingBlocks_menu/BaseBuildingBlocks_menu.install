@@ -1,0 +1,19 @@
+<?php
+/**
+ * Implimenting hook_install()
+ */
+function BaseBuildingBlocks_menu_install() {
+  //Set some defaults
+  variable_set('standard_menu', 'main-menu');
+  variable_set('mobile_menu', 'main-menu');
+}
+
+/**
+ * Implimenting hook_uninstall()
+ */
+function BaseBuildingBlocks_menu_uninstall() {
+  //Delete the unneeded variables
+  variable_del('standard_menu');
+  variable_del('mobile_classes');
+}
+

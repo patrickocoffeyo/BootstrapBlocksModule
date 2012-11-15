@@ -1,0 +1,22 @@
+<?php
+/**
+ * Implimenting hook_install()
+ */
+function BaseBuildingBlocks_navbar_install() {
+  //Set some defaults
+  variable_set('admin_navbar_menu', 'management');
+  variable_set('admin_navbar_classes', 'navbar-fixed-top');
+  variable_set('navbar_menu', 'main-menu');
+}
+
+/**
+ * Implimenting hook_uninstall()
+ */
+function BaseBuildingBlocks_navbar_uninstall() {
+  //Delete the unneeded variables
+  variable_del('admin_navbar_menu');
+  variable_del('admin_navbar_classes');
+  variable_del('navbar_menu');
+  variable_Del('navbar_classes');
+}
+

@@ -1,0 +1,14 @@
+<?php
+/**
+ * Implements hook_filter_info().
+ *
+ * Provides a WYSIWYG Code editor filter
+ */
+function BaseBuildingBlocks_wysiwyg_filter_info() {
+  $filters['wysiwyg'] = array(
+    'title' => t('WYSIWYG'),
+    'description' => t('Provides a full html WYSIWYG editor'),
+    'cache' => FALSE,
+  );
+  return $filters;
+}

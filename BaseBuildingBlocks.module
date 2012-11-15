@@ -1,0 +1,37 @@
+<?php
+//Includes
+include('includes/admin.inc');
+
+/**
+ * Impliments hook_menu
+ */
+function BaseBuildingBlocks_menu() {
+  $items = array();
+  $items['admin/appearance/basebuildingblocks'] = array(
+    'title' => t('Base Building Blocks'),
+    'page arguments' => array(3),
+    'access arguments' => array('administer themes'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('BaseBuildingBlocks_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/appearance/basebuildingblocks/settings'] = array(
+    'title' => 'Main',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10 
+  );
+
+  return $items;
+}
+/**
+ * Implements hook_filter_info().
+ * Provides a WYSIWYG Code editor filter
+ */
+function BaseBuildingBlocks_filter_info() {
+  $filters['wysiwyg'] = array(
+    'title' => t('WYSIWYG'),
+    'description' => t('Provides a filtered html WYSIWYG editor'),
+    'cache' => FALSE,
+  );
+  return $filters;
+}

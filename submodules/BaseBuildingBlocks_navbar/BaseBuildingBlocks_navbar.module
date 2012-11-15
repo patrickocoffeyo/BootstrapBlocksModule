@@ -1,0 +1,121 @@
+<?php
+/**
+ * Implements hook_block_info().
+ */
+function BaseBuildingBlocks_navbar_block_info() {
+  $blocks = array();
+  $blocks['navbar'] = array(
+    'info' => t('Bootstrap Navbar'),
+  );
+  $blocks['admin_navbar'] = array(
+    'info' => t('Bootstrap Admin Navbar'),
+    'region' => 'navbar',
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implimenting hook_block_view()
+ */
+function BaseBuildingBlocks_navbar_block_view($delta = '')  {
+  $block = array();
+  switch ($delta) {
+    case 'navbar':
+      $block['subject'] = t(''); //Leave it empty, a navbar doesn't need a title :)
+      $block['content'] = BaseBuildingBlocks_navbar_build_navbar(variable_get('navbar_menu'), variable_get('navbar_classes'));
+      break;
+    case 'admin_navbar':
+      $block['subject'] = t(''); //Leave it empty, a navbar doesn't need a title :)
+      $block['content'] = BaseBuildingBlocks_navbar_build_navbar(variable_get('admin_navbar_menu'), variable_get('admin_navbar_classes'), TRUE);
+
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function BaseBuildingBlocks_navbar_block_configure($delta='') {
+  $form = array();
+  
+  //Grab the menus within the system, and put them in an array we can use
+  $menus = menu_get_names();
+  $menu_options = array();
+  foreach ($menus as $menu) {
+    $menu_options[$menu] = $menu;
+  }
+  
+  switch($delta) {
+    case 'navbar':
+      $form['navbar_menu'] = array(
+        '#type' => 'select',
+        '#title' => t('Source Menu'),
+        '#options' => $menu_options,
+        '#default_value' => variable_get('navbar_menu', 'main-menu'),
+      );
+      $form['navbar_classes'] = array(
+        '#type' => 'textfield',
+        '#title' => t('CSS Classes'),
+        '#default_value' => variable_get('navbar_classes'),
+      ); 
+      break;
+    case 'admin_navbar':
+      $form['admin_navbar_menu'] = array(
+        '#type' => 'select',
+        '#title' => t('Source Menu'),
+        '#options' => $menu_options,
+        '#default_value' => variable_get('admin_navbar_menu'),
+      );
+      $form['admin_navbar_classes'] = array(
+        '#type' => 'textfield',
+        '#title' => t('CSS Classes'),
+        '#default_value' => variable_get('admin_navbar_classes'),
+      ); 
+      break;
+
+  }
+  return $form;
+}
+
+/**
+ * Grabs a menu from the database and returns it as a Bootstrap navbar
+ *
+ * @param $menu_name
+ *   Name of the menu in the Drupal system that the navbar should be constructed form
+ *
+ * @param $classes
+ *   Classes to add to the navbar's wrapper (like inverse, or fixed)
+ *
+ * @return
+ *   String containing the DOM for a Bootstrap Navbar from the Drupal Menu system
+ */
+function BaseBuildingBlocks_navbar_build_navbar($menu_name, $classes, $administration = FALSE) {
+  $menu = menu_tree_all_data($menu_name);
+
+  if ($administration == TRUE) {
+    $menu = $menu["50009 Administration 1"]['below'];
+  }
+  
+  return theme('navbar', array(
+    'classes' => $classes,
+    'menu' => BaseBuildingBlocks_navbar_tree_output($menu),
+  ));
+}
+
+/**
+ * Implimenting hook_theme();
+ */
+function BaseBuildingBlocks_navbar_theme() {
+  return array(
+    'navbar' => array(
+      'template' => 'templates/navbar',
+      'variables' => array(
+        'classes' => '',
+        'menu' => '',
+      ),
+    ),
+  );
+}

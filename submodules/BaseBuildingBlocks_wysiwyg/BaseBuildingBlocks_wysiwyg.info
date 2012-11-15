@@ -1,0 +1,7 @@
+name = Base Building Blocks wysiwyg
+description = Adds a nice Bootstrap WYSIWYG editor (From <a href="http://jhollingworth.github.com/">this cool cat</a>.)
+version = 7.x-1.0.0
+package = Base Building Blocks
+core = 7.x
+
+dependancies[] = BaseBuildingBlocks

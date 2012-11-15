@@ -1,0 +1,27 @@
+<?php
+/**
+ * Implimenting hook_requirements()
+ * This module requires that the Base Building Blocks theme 
+ * be enabled and in use to operate properly.
+ */
+function BaseBuildingBlocks_requirements($phase) {
+  global $theme_key;
+  $requirements = array();
+
+  //Everything is ok by default
+  $requirements['current_theme'] = array(
+    'value' => t('Enabled'),
+    'severity' => REQUIREMENT_OK,
+  );
+
+  //Make sure that Base Building Blocks is the enabled and used theme
+  if ($theme_key != 'BaseBuildingBlocks') {
+    $requirements['current_theme'] = array(
+      'value' => t('Disabled'),
+      'severity' => REQUIREMENT_ERROR,
+      'description' => t('To use the Base Building Blocks Module, you must download and enable the Base Building Blocks Theme. Visit htp://basethe.me to download Base Building Blocks theme, or download from github or drush.'),
+    ); 
+  }
+
+  return $requirements;
+}
