@@ -6,6 +6,7 @@ function BaseBuildingBlocks_menu_install() {
   //Set some defaults
   variable_set('standard_menu', 'main-menu');
   variable_set('mobile_menu', 'main-menu');
+  variable_set('menu_block_count', 1);
 }
 
 /**
@@ -14,6 +15,7 @@ function BaseBuildingBlocks_menu_install() {
 function BaseBuildingBlocks_menu_uninstall() {
   //Delete the unneeded variables
   variable_del('standard_menu');
-  variable_del('mobile_classes');
+  variable_del('mobile_menu');
+  variable_del('standard_menu_icons');
+  variable_del('menu_block_count');
 }
-

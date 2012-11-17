@@ -3,6 +3,7 @@ description = A collection of functions and configurations for Bootstrap menus.
 version = 7.x-1.0.0
 package = Base Building Blocks
 core = 7.x
+configure = admin/appearance/basebuildingblocks/menu
 
-dependancies[] = BaseBuildingBlocks
-dependancies[] = menu
+dependencies[] = BaseBuildingBlocks
+dependencies[] = menu

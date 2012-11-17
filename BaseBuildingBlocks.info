@@ -3,3 +3,5 @@ description = Module that extends the Base Building Blocks Theme. Parent module 
 version = 7.x-1.0.0
 package = Base Building Blocks
 core = 7.x
+
+configure = admin/appearance/basebuildingblocks

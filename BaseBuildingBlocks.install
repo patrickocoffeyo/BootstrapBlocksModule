@@ -25,3 +25,17 @@ function BaseBuildingBlocks_requirements($phase) {
 
   return $requirements;
 }
+
+/**
+ * Impliments hook_install()
+ */
+function BaseBuildingBlocks_install() {
+  
+  //Enable some submodules
+  $module_list = array(
+    'BaseBuildingBlocks_menu',
+    'BaseBuildingBlocks_navbar'
+  );
+  
+  module_enable($module_list, TRUE);
+}
