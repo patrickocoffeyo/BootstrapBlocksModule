@@ -5,7 +5,7 @@
  * be enabled and in use to operate properly.
  */
 function BaseBuildingBlocks_requirements($phase) {
-  global $theme_key;
+  $default_theme = variable_get('theme_default');
   $requirements = array();
 
   //Everything is ok by default
@@ -15,7 +15,7 @@ function BaseBuildingBlocks_requirements($phase) {
   );
 
   //Make sure that Base Building Blocks is the enabled and used theme
-  if ($theme_key != 'BaseBuildingBlocks') {
+  if ($default_theme != 'BaseBuildingBlocks') {
     $requirements['current_theme'] = array(
       'value' => t('Disabled'),
       'severity' => REQUIREMENT_ERROR,
