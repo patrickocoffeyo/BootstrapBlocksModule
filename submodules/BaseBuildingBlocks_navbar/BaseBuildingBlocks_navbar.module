@@ -6,10 +6,12 @@ function BaseBuildingBlocks_navbar_block_info() {
   $blocks = array();
   $blocks['navbar'] = array(
     'info' => t('Bootstrap Navbar'),
+    'status' => 1,
   );
   $blocks['admin_navbar'] = array(
     'info' => t('Bootstrap Admin Navbar'),
     'region' => 'navbar',
+    'status' => 1,
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
   );
 

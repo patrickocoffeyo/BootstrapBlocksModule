@@ -27,12 +27,10 @@ function BaseBuildingBlocks_menu_block_info() {
   for ($i = 1; $i <= variable_get('menu_block_count'); $i++) {
     $blocks['standard_menu_'.$i] = array(
       'info' => t('Bootstrap Menu '.$i),
-      'region' => 'menu',
     );
   }
   $blocks['mobile_menu'] = array(
     'info' => t('Mobile Menu'),
-    'region' => 'menu',
   );
 
   return $blocks;
