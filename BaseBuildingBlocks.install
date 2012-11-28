@@ -10,6 +10,7 @@ function BaseBuildingBlocks_requirements($phase) {
 
   //Everything is ok by default
   $requirements['current_theme'] = array(
+    'title' => t('Default'),
     'value' => t('Enabled'),
     'severity' => REQUIREMENT_OK,
   );
@@ -17,6 +18,7 @@ function BaseBuildingBlocks_requirements($phase) {
   //Make sure that Base Building Blocks is the enabled and used theme
   if ($default_theme != 'BaseBuildingBlocks') {
     $requirements['current_theme'] = array(
+      'title' => t('Base Building Blocks theme not enabled'),
       'value' => t('Disabled'),
       'severity' => REQUIREMENT_ERROR,
       'description' => t('To use the Base Building Blocks Module, you must download and enable the Base Building Blocks Theme. Visit htp://basethe.me to download Base Building Blocks theme, or download from github or drush.'),
