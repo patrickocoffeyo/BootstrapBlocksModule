@@ -5,5 +5,5 @@ package = Base Building Blocks
 core = 7.x
 configure = admin/appearance/basebuildingblocks/menu
 
-dependencies[] = BaseBuildingBlocks
+dependencies[] = BaseBuildingBlocks_module
 dependencies[] = menu

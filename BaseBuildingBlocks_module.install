@@ -4,7 +4,7 @@
  * This module requires that the Base Building Blocks theme 
  * be enabled and in use to operate properly.
  */
-function BaseBuildingBlocks_requirements($phase) {
+function BaseBuildingBlocks_module_requirements($phase) {
   $default_theme = variable_get('theme_default');
   $requirements = array();
 
@@ -31,7 +31,7 @@ function BaseBuildingBlocks_requirements($phase) {
 /**
  * Impliments hook_install()
  */
-function BaseBuildingBlocks_install() {
+function BaseBuildingBlocks_module_install() {
   
   //Enable some submodules
   $module_list = array(

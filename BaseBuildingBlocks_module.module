@@ -5,11 +5,10 @@ include('includes/admin.inc');
 /**
  * Impliments hook_menu
  */
-function BaseBuildingBlocks_menu() {
+function BaseBuildingBlocks_module_menu() {
   $items = array();
   $items['admin/appearance/basebuildingblocks'] = array(
     'title' => t('Base Building Blocks'),
-    'page arguments' => array(3),
     'access arguments' => array('administer themes'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('BaseBuildingBlocks_settings_form'),
