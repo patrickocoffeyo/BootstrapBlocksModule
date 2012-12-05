@@ -45,7 +45,7 @@ function BaseBuildingBlocks_menu_block_view($delta = '') {
   
   //If this is the mobile menu..
   if (strpos($delta, 'mobile') !== false) {
-    $block['content'] = drupal_get_form('BaseBuildingBlocks_menu_select_menu_form', variable_get('mobile_menu'));
+    $block['content'] = drupal_get_form('BaseBuildingBlocks_menu_select_menu_form', variable_get('mobile_menu_menu'));
   }
   
   else {
