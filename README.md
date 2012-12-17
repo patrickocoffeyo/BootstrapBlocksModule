@@ -8,7 +8,7 @@ It ships with a parent module that makes sure [Base Building Blocks Theme](https
 The Base Building Blocks Module requires that you use [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks), as it is an extension to that theme.
 
 ## Installation
-Installation is simple, just enable the Base Building Blocks module. A default set of submodules will be enabled.
+Installation is simple. Make sure that the [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks) is enabled and set as default, then enable the Base Building Blocks module. A default set of submodules will be enabled.
 
 ## Configuration
 All configuration pages are added under admin/appearance/basebuildingblocks. You can customize each submodule (subtabs) there.
