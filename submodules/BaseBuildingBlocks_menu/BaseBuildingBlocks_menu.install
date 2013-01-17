@@ -7,6 +7,7 @@ function BaseBuildingBlocks_menu_install() {
   variable_set('standard_menu', 'main-menu');
   variable_set('mobile_menu', 'main-menu');
   variable_set('menu_block_count', 1);
+  variable_set('mobile_menu_block_count', 1);
 }
 
 /**
@@ -18,4 +19,5 @@ function BaseBuildingBlocks_menu_uninstall() {
   variable_del('mobile_menu');
   variable_del('standard_menu_icons');
   variable_del('menu_block_count');
+  variable_del('mobile_menu_block_count');
 }

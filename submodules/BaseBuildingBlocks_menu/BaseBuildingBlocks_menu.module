@@ -24,14 +24,18 @@ function BaseBuildingBlocks_menu_menu() {
  */
 function BaseBuildingBlocks_menu_block_info() {
   $blocks = array();
-  for ($i = 1; $i <= variable_get('menu_block_count'); $i++) {
+  
+  for ($i = 0; $i <= variable_get('menu_block_count'); $i++) {
     $blocks['standard_menu_'.$i] = array(
-      'info' => t('Bootstrap Menu '.$i),
+      'info' => t('Bootstrap Menu '.($i + 1)),
     );
   }
-  $blocks['mobile_menu'] = array(
-    'info' => t('Mobile Menu'),
-  );
+  
+  for($i = 0; $i <= variable_get('mobile_menu_block_count'); $i++) {
+    $blocks['mobile_menu_'.$i] = array(
+      'info' => t('Mobile Menu '.($i + 1)),
+    );
+  }
 
   return $blocks;
 }
@@ -45,12 +49,12 @@ function BaseBuildingBlocks_menu_block_view($delta = '') {
   
   //If this is the mobile menu..
   if (strpos($delta, 'mobile') !== false) {
-    $block['content'] = drupal_get_form('BaseBuildingBlocks_menu_select_menu_form', variable_get('mobile_menu_menu'));
+    $block['content'] = drupal_get_form('BaseBuildingBlocks_menu_select_menu_form', variable_get($delta.'_menu'));
   }
-  
   else {
     $block['content'] = BaseBuildingBlocks_menu_build_menu(variable_get($delta.'_menu'), $delta);
   }
+
   return $block;
 }
 
@@ -63,6 +67,7 @@ function BaseBuildingBlocks_menu_block_configure($delta = '') {
   //Grab the menus within the system, and put them in an array we can use
   $menus = menu_get_names();
   $menu_options = array();
+  
   foreach ($menus as $menu) {
     $menu_options[$menu] = $menu;
   }
@@ -158,8 +163,9 @@ function BaseBuildingBlocks_menu_select_menu_form($form, &$form_state, $menu_nam
    
    //Construct a menu array for the form
    $menu = array();
+   $menu[''] = t('Go to...');
    foreach ($menu_items as $menu_item) {
-     $menu['/'.$menu_item['link']['link_path']] = $menu_item['link']['link_title'];
+     $menu[url($menu_item['link']['link_path'])] = $menu_item['link']['link_title'];
    }
    
    //Add the javascript to handle the on-click events
