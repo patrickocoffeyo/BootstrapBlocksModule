@@ -1,11 +1,12 @@
 <?php
 /**
- * Implimenting hook_requirements()
- * This module requires that the Base Building Blocks theme 
- * be enabled and in use to operate properly.
+ * Implementing hook_requirements()
+ * This module requires that the Base Building Blocks theme
+ * or a Base Building Blocks sub-theme is enabled and in
+ * use to operate properly.
  */
 function BaseBuildingBlocks_module_requirements($phase) {
-  $default_theme = variable_get('theme_default');
+
   $requirements = array();
 
   //Everything is ok by default
@@ -15,29 +16,34 @@ function BaseBuildingBlocks_module_requirements($phase) {
     'severity' => REQUIREMENT_OK,
   );
 
-  //Make sure that Base Building Blocks is the enabled and used theme
+  //Make sure that Base Building Blocks is the enabled and used theme or base theme
+  $default_theme = variable_get('theme_default');
   if ($default_theme != 'BaseBuildingBlocks') {
-    $requirements['current_theme'] = array(
-      'title' => t('Base Building Blocks theme not enabled'),
-      'value' => t('Disabled'),
-      'severity' => REQUIREMENT_ERROR,
-      'description' => t('To use the Base Building Blocks Module, you must download and enable the Base Building Blocks Theme. Visit htp://basethe.me to download Base Building Blocks theme, or download from github or drush.'),
-    ); 
+    $themes = _system_rebuild_theme_data();
+    $default_theme_base = $themes[$default_theme]->info['base theme'];
+    if($default_theme_base != 'BaseBuildingBlocks') {
+      $requirements['current_theme'] = array(
+        'title' => t('Base Building Blocks theme or sub-theme not enabled'),
+        'value' => t('Disabled'),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => t('To use the Base Building Blocks Module, you must download and enable the Base Building Blocks Theme. You can also use a sub-theme of Base Building Blocks Theme. Visit htp://basethe.me to download Base Building Blocks theme, or download from github or drush.'),
+      );
+    }
   }
 
   return $requirements;
 }
 
 /**
- * Impliments hook_install()
+ * Implements hook_install()
  */
 function BaseBuildingBlocks_module_install() {
-  
+
   //Enable some submodules
   $module_list = array(
     'BaseBuildingBlocks_menu',
     'BaseBuildingBlocks_navbar'
   );
-  
+
   module_enable($module_list, TRUE);
 }
