@@ -20,8 +20,8 @@ function BaseBuildingBlocks_module_requirements($phase) {
   $default_theme = variable_get('theme_default');
   if ($default_theme != 'BaseBuildingBlocks') {
     $themes = _system_rebuild_theme_data();
-    $default_theme_base = $themes[$default_theme]->info['base theme'];
-    if($default_theme_base != 'BaseBuildingBlocks') {
+    $default_theme_info = $themes[$default_theme]->info;
+    if (!isset($default_theme_info['base theme']) OR $default_theme_info['base theme'] != 'BaseBuildingBlocks') {
       $requirements['current_theme'] = array(
         'title' => t('Base Building Blocks theme or sub-theme not enabled'),
         'value' => t('Disabled'),
