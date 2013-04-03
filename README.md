@@ -1,14 +1,14 @@
-# Base Building Blocks Module
+# Bootstrap Blocks Module
 
-The Base Building Blocks Module is is an extension module to the [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks). It allows users to proplerly add blocks, and pages that make full use of Twitter Bootstrap to their Drupal projects without adding Bootstrap into the module.
+The Bootstrap Blocks Module is is an extension module to the [Bootstrap Blocks Theme](https://github.com/patrickocoffeyo/BootstrapBlocks). It allows users to proplerly add blocks, and pages that make full use of Twitter Bootstrap to their Drupal projects without adding Bootstrap into the module.
 
-It ships with a parent module that makes sure [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks) is installed and in use (Remember, these modules need Bootstrap!), and a collection of submodules that create completely customizeable Bootstrap Navbars, Administration Menus, standard menus in Bootstrap Dropdown Form, and more.
+It ships with a parent module that makes sure [Bootstrap Blocks Theme](https://github.com/patrickocoffeyo/BootstrapBlocks) is installed and in use (Remember, these modules need Bootstrap!), and a collection of submodules that create completely customizeable Bootstrap Navbars, Administration Menus, standard menus in Bootstrap Dropdown Form, and more.
 
 ## Requirements
-The Base Building Blocks Module requires that you use [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks), as it is an extension to that theme.
+The Base Building Blocks Module requires that you use [Bootstrap Blocks Theme](https://github.com/patrickocoffeyo/BootstrapBlocks), as it is an extension to that theme.
 
 ## Installation
-Installation is simple. Make sure that the [Base Building Blocks Theme](https://github.com/patrickocoffeyo/BaseBuildingBlocks) is enabled and set as default, then enable the Base Building Blocks module. A default set of submodules will be enabled.
+Installation is simple. Make sure that the [Bootstrap Blocks Theme](https://github.com/patrickocoffeyo/BootstrapBlocks) is enabled and set as default, then enable the Base Building Blocks module. A default set of submodules will be enabled.
 
 ## Configuration
 All configuration pages are added under admin/appearance/basebuildingblocks. You can customize each submodule (subtabs) there.
