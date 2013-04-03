@@ -5,14 +5,14 @@ include('includes/admin.inc');
 /**
  * Impliments hook_menu
  */
-function BaseBuildingBlocks_menu_menu() {
+function BootstrapBlocks_menu_menu() {
   $items = array();
-  $items['admin/appearance/basebuildingblocks/menu'] = array(
+  $items['admin/appearance/bootstrapblocks/menu'] = array(
     'title' => t('Menu Settings'),
     'page arguments' => array(3),
     'access arguments' => array('administer themes'),
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('BaseBuildingBlocks_menu_settings_form'),
+    'page arguments' => array('BootstrapBlocks_menu_settings_form'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -22,7 +22,7 @@ function BaseBuildingBlocks_menu_menu() {
 /**
  * Implements hook_block_info().
  */
-function BaseBuildingBlocks_menu_block_info() {
+function BootstrapBlocks_menu_block_info() {
   $blocks = array();
   
   for ($i = 0; $i <= variable_get('menu_block_count'); $i++) {
@@ -43,16 +43,16 @@ function BaseBuildingBlocks_menu_block_info() {
 /**
  * Implimenting hook_block_view()
  */
-function BaseBuildingBlocks_menu_block_view($delta = '') {
+function BootstrapBlocks_menu_block_view($delta = '') {
   $block = array();
   $block['subject'] = t('');
   
   //If this is the mobile menu..
   if (strpos($delta, 'mobile') !== false) {
-    $block['content'] = drupal_get_form('BaseBuildingBlocks_menu_select_menu_form', variable_get($delta.'_menu'));
+    $block['content'] = drupal_get_form('bootstrapblocks_menu_select_menu_form', variable_get($delta.'_menu'));
   }
   else {
-    $block['content'] = BaseBuildingBlocks_menu_build_menu(variable_get($delta.'_menu'), $delta);
+    $block['content'] = BootstrapBlocks_menu_build_menu(variable_get($delta.'_menu'), $delta);
   }
 
   return $block;
@@ -61,7 +61,7 @@ function BaseBuildingBlocks_menu_block_view($delta = '') {
 /**
  * Implements hook_block_configure().
  */
-function BaseBuildingBlocks_menu_block_configure($delta = '') {
+function BootstrapBlocks_menu_block_configure($delta = '') {
   $form = array();
   
   //Grab the menus within the system, and put them in an array we can use
@@ -82,7 +82,7 @@ function BaseBuildingBlocks_menu_block_configure($delta = '') {
     '#type' => 'textarea',
     '#title' => t('Icons'),
     '#default_value' => variable_get($delta.'_icons'),
-    '#description' => t('Determines what Font Awesome icon should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-font-awesome-preset)'),
+    '#description' => t('Determines what icon should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-class-preset)'),
   );
 
   return $form;
@@ -91,7 +91,7 @@ function BaseBuildingBlocks_menu_block_configure($delta = '') {
 /**
  * Implements hook_block_save().
  */
-function BaseBuildingBlocks_menu_block_save($delta, $edit) {
+function BootstrapBlocks_menu_block_save($delta, $edit) {
   variable_set($delta.'_icons', $edit[$delta.'_icons']);
   variable_set($delta.'_menu', $edit[$delta.'_menu']);
 }
@@ -103,7 +103,7 @@ function BaseBuildingBlocks_menu_block_save($delta, $edit) {
  * @param $block_name
  *   Name of block that the menu will belong too
  */
-function BaseBuildingBlocks_menu_build_menu($menu_name, $block_name = '') {
+function BootstrapBlocks_menu_build_menu($menu_name, $block_name = '') {
   return theme('standard_menu', array(
     'menu' => menu_tree_all_data($menu_name),
     'block_name' => $block_name,
@@ -117,7 +117,7 @@ function BaseBuildingBlocks_menu_build_menu($menu_name, $block_name = '') {
  * @return
  *   BOOL TRUE or FALSE value, indicating whether or not the current menu item is active
  */
-function BaseBuildingBlocks_menu_is_active($path) {
+function BootstrapBlocks_menu_is_active($path) {
   if ($path == $_GET['q'] || (drupal_is_front_page() && $path === '<front>')) {
     return TRUE;
   }
@@ -132,11 +132,11 @@ function BaseBuildingBlocks_menu_is_active($path) {
  * @param $block_name
  *   Name of block to get the icon settings from
  * @return
- *   HTML for the Font Awesome icon from the passed-in $link_title
+ *   HTML for the icon from the passed-in $link_title
  * 
  * Makes use of list_extract_allowed_values() from the field_list module
  */
-function BaseBuildingBlocks_menu_get_link_icon($link_title, $block_name = '') {
+function BootstrapBlocks_menu_get_link_icon($link_title, $block_name = '') {
   $menu_icons = variable_get($block_name.'_icons');
   $array = list_extract_allowed_values($menu_icons, 'list_text', FALSE);
 
@@ -156,7 +156,7 @@ function BaseBuildingBlocks_menu_get_link_icon($link_title, $block_name = '') {
  * @param $menu_name
  *   Name of menu to print as a select list
  */
-function BaseBuildingBlocks_menu_select_menu_form($form, &$form_state, $menu_name) {
+function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) {
    
    //Grab the menu items for the passed in menu name
    $menu_items =  menu_tree_all_data($menu_name);
@@ -197,7 +197,7 @@ function BaseBuildingBlocks_menu_select_menu_form($form, &$form_state, $menu_nam
 /**
  * Implimenting hook_theme();
  */
-function BaseBuildingBlocks_menu_theme() {
+function BootstrapBlocks_menu_theme() {
   return array(
     'standard_menu' => array(
       'template' => 'templates/standard_menu',

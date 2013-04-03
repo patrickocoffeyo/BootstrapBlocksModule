@@ -1,0 +1,9 @@
+name = Bootstrap Blocks Menu
+description = A collection of functions and configurations for Bootstrap menus.
+version = 7.x-1.0.0
+package = Bootstrap Blocks
+core = 7.x
+configure = admin/appearance/bootstrapblocks/menu
+
+dependencies[] = BootstrapBlocks_module
+dependencies[] = menu

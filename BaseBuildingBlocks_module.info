@@ -1,7 +1,0 @@
-name = Base Building Blocks
-description = Module that extends the Base Building Blocks Theme. Parent module for all Base Building Block submodules.
-version = 7.x-1.0.0
-package = Base Building Blocks
-core = 7.x
-
-configure = admin/appearance/basebuildingblocks

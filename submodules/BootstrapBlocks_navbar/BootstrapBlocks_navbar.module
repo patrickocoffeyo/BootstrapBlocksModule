@@ -2,7 +2,7 @@
 /**
  * Implements hook_block_info().
  */
-function BaseBuildingBlocks_navbar_block_info() {
+function BootstrapBlocks_navbar_block_info() {
   $blocks = array();
   $blocks['navbar'] = array(
     'info' => t('Bootstrap Navbar'),
@@ -21,16 +21,16 @@ function BaseBuildingBlocks_navbar_block_info() {
 /**
  * Implimenting hook_block_view()
  */
-function BaseBuildingBlocks_navbar_block_view($delta = '')  {
+function BootstrapBlocks_navbar_block_view($delta = '')  {
   $block = array();
   switch ($delta) {
     case 'navbar':
       $block['subject'] = t(''); //Leave it empty, a navbar doesn't need a title :)
-      $block['content'] = BaseBuildingBlocks_navbar_build_navbar(variable_get('navbar_menu'), 'navbar');
+      $block['content'] = BootstrapBlocks_navbar_build_navbar(variable_get('navbar_menu'), 'navbar');
       break;
     case 'admin_navbar':
       $block['subject'] = t(''); //Leave it empty, a navbar doesn't need a title :)
-      $block['content'] = BaseBuildingBlocks_navbar_build_navbar(variable_get('admin_navbar_menu'), 'admin_navbar', TRUE);
+      $block['content'] = BootstrapBlocks_navbar_build_navbar(variable_get('admin_navbar_menu'), 'admin_navbar', TRUE);
       break;
   }
 
@@ -40,7 +40,7 @@ function BaseBuildingBlocks_navbar_block_view($delta = '')  {
 /**
  * Implements hook_block_configure().
  */
-function BaseBuildingBlocks_navbar_block_configure($delta='') {
+function BootstrapBlocks_navbar_block_configure($delta='') {
   $form = array();
   
   //Grab the menus within the system, and put them in an array we can use
@@ -67,7 +67,7 @@ function BaseBuildingBlocks_navbar_block_configure($delta='') {
         '#type' => 'textarea',
         '#title' => t('Icons'),
         '#default_value' => variable_get('navbar_icons'),
-        '#description' => t('Determines what Font Awesome icon should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-font-awesome-preset)'),
+        '#description' => t('Determines what icon class should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-font-awesome-preset)'),
       );
       break;
     case 'admin_navbar':
@@ -86,7 +86,7 @@ function BaseBuildingBlocks_navbar_block_configure($delta='') {
         '#type' => 'textarea',
         '#title' => t('Icons'),
         '#default_value' => variable_get('admin_navbar_icons'),
-        '#description' => t('Determines what Font Awesome icon should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-font-awesome-preset)'),
+        '#description' => t('Determines what icon class should be printed before each menu item in  based off of the menu items title. (For example: My Menu Link Title | icon-font-awesome-preset)'),
       );
       break;
 
@@ -97,7 +97,7 @@ function BaseBuildingBlocks_navbar_block_configure($delta='') {
 /**
  * Implements hook_block_save().
  */
-function BaseBuildingBlocks_navbar_block_save($delta, $edit) {
+function BootstrapBlocks_navbar_block_save($delta, $edit) {
   variable_set($delta.'_icons', $edit[$delta.'_icons']);
   variable_set($delta.'_menu', $edit[$delta.'_menu']);
   variable_set($delta.'_classes', $edit[$delta.'_classes']);
@@ -115,7 +115,7 @@ function BaseBuildingBlocks_navbar_block_save($delta, $edit) {
  * @return
  *   String containing the DOM for a Bootstrap Navbar from the Drupal Menu system
  */
-function BaseBuildingBlocks_navbar_build_navbar($menu_name, $block_name = '', $administration = FALSE) {
+function BootstrapBlocks_navbar_build_navbar($menu_name, $block_name = '', $administration = FALSE) {
   $menu = menu_tree_all_data($menu_name);
   
   if ($menu) {
@@ -134,7 +134,7 @@ function BaseBuildingBlocks_navbar_build_navbar($menu_name, $block_name = '', $a
 /**
  * Implimenting hook_theme();
  */
-function BaseBuildingBlocks_navbar_theme() {
+function BootstrapBlocks_navbar_theme() {
   return array(
     'navbar' => array(
       'template' => 'templates/navbar',

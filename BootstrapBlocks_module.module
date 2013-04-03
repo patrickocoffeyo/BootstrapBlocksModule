@@ -5,16 +5,16 @@ include('includes/admin.inc');
 /**
  * Impliments hook_menu
  */
-function BaseBuildingBlocks_module_menu() {
+function BootstrapBlocks_module_menu() {
   $items = array();
-  $items['admin/appearance/basebuildingblocks'] = array(
-    'title' => t('Base Building Blocks'),
+  $items['admin/appearance/bootstrapblocks'] = array(
+    'title' => t('Bootstrap Blocks'),
     'access arguments' => array('administer themes'),
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('BaseBuildingBlocks_settings_form'),
+    'page arguments' => array('BootstrapBlocks_settings_form'),
     'type' => MENU_LOCAL_TASK,
   );
-  $items['admin/appearance/basebuildingblocks/settings'] = array(
+  $items['admin/appearance/bootstrapblocks/settings'] = array(
     'title' => 'Main',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10 

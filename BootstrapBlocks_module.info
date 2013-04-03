@@ -1,0 +1,7 @@
+name = Bootstrap Blocks
+description = Module that extends the Base Building Blocks Theme. Parent module for all Bootstrap Block submodules.
+version = 7.x-1.0.0
+package = Bootstrap Blocks
+core = 7.x
+
+configure = admin/appearance/bootstrapblocks
