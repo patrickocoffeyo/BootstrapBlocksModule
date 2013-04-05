@@ -42,14 +42,14 @@ function BootstrapBlocks_navbar_block_view($delta = '')  {
  */
 function BootstrapBlocks_navbar_block_configure($delta='') {
   $form = array();
-  
+
   //Grab the menus within the system, and put them in an array we can use
   $menus = menu_get_names();
   $menu_options = array();
   foreach ($menus as $menu) {
     $menu_options[$menu] = $menu;
   }
-  
+
   switch($delta) {
     case 'navbar':
       $form['navbar_menu'] = array(
@@ -117,12 +117,13 @@ function BootstrapBlocks_navbar_block_save($delta, $edit) {
  */
 function BootstrapBlocks_navbar_build_navbar($menu_name, $block_name = '', $administration = FALSE) {
   $menu = menu_tree_all_data($menu_name);
-  
+
   if ($menu) {
     if ($administration == TRUE) {
-      $menu = $menu['50009 Administration 1']['below'];
+      $menu = array_pop($menu);
+      $menu = $menu['below'];
     }
-    
+
     return theme('navbar', array(
       'navbar_classes' => variable_get($block_name.'_classes'),
       'menu' => $menu,
