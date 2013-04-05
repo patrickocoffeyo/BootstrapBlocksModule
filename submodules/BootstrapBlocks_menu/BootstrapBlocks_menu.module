@@ -24,13 +24,13 @@ function BootstrapBlocks_menu_menu() {
  */
 function BootstrapBlocks_menu_block_info() {
   $blocks = array();
-  
+
   for ($i = 0; $i <= variable_get('menu_block_count'); $i++) {
     $blocks['standard_menu_'.$i] = array(
       'info' => t('Bootstrap Menu '.($i + 1)),
     );
   }
-  
+
   for($i = 0; $i <= variable_get('mobile_menu_block_count'); $i++) {
     $blocks['mobile_menu_'.$i] = array(
       'info' => t('Mobile Menu '.($i + 1)),
@@ -46,13 +46,13 @@ function BootstrapBlocks_menu_block_info() {
 function BootstrapBlocks_menu_block_view($delta = '') {
   $block = array();
   $block['subject'] = t('');
-  
+
   //If this is the mobile menu..
   if (strpos($delta, 'mobile') !== false) {
     $block['content'] = drupal_get_form('bootstrapblocks_menu_select_menu_form', variable_get($delta.'_menu'));
   }
   else {
-    $block['content'] = BootstrapBlocks_menu_build_menu(variable_get($delta.'_menu'), $delta);
+    $block['content'] = BootstrapBlocks_menu_build_menu(variable_get($delta.'_menu', 'main-menu'), $delta);
   }
 
   return $block;
@@ -63,11 +63,11 @@ function BootstrapBlocks_menu_block_view($delta = '') {
  */
 function BootstrapBlocks_menu_block_configure($delta = '') {
   $form = array();
-  
+
   //Grab the menus within the system, and put them in an array we can use
   $menus = menu_get_names();
   $menu_options = array();
-  
+
   foreach ($menus as $menu) {
     $menu_options[$menu] = $menu;
   }
@@ -104,9 +104,16 @@ function BootstrapBlocks_menu_block_save($delta, $edit) {
  *   Name of block that the menu will belong too
  */
 function BootstrapBlocks_menu_build_menu($menu_name, $block_name = '') {
+  $menu = menu_tree_all_data($menu_name);
+
+  //Allow the i18n module to translate
+  if (module_exists('i18n_menu')) {
+    $menu = i18n_menu_localize_tree($menu);
+  }
+
   return theme('standard_menu', array(
-    'menu' => menu_tree_all_data($menu_name),
-    'block_name' => $block_name,
+    'menu' => $menu,
+    'block_name' => $block_name
   ));
 }
 
@@ -121,7 +128,7 @@ function BootstrapBlocks_menu_is_active($path) {
   if ($path == $_GET['q'] || (drupal_is_front_page() && $path === '<front>')) {
     return TRUE;
   }
-  
+
   return FALSE;
 }
 
@@ -137,18 +144,56 @@ function BootstrapBlocks_menu_is_active($path) {
  * Makes use of list_extract_allowed_values() from the field_list module
  */
 function BootstrapBlocks_menu_get_link_icon($link_title, $block_name = '') {
-  $menu_icons = variable_get($block_name.'_icons');
-  $array = list_extract_allowed_values($menu_icons, 'list_text', FALSE);
+  $icons = variable_get($block_name.'_icons');
+  $icons_array = list_extract_allowed_values($icons, 'list_text', FALSE);
 
-  if (isset($array[$link_title])) {
-    $icon = '<i class="'.$array[$link_title].'"></i>';
-  } 
-  else {
-    $icon = '';
+  $icon = '';
+  if (isset($icons_array[$link_title])) {
+    $icon = '<i class="'.$icons_array[$link_title].'"></i>';
   }
 
   return $icon;
 }
+
+/**
+ * Returns list HTML for a link
+ * @param $menu_item
+ *   The menu item returned from menu_tree_all_data
+ * @param $block_name
+ *   The name of the block this menu belongs too
+ */
+function BootstrapBlocks_print_menu_items($menu_item, $block_name, $index = 1) { ?>
+    <li class="<?php echo (!empty($menu_item['below']) ? 'dropdown' : ''); echo (($index == 2) ? '-submenu' : ''); echo BootstrapBlocks_menu_is_active($menu_item['link']['link_path']) ? ' active': ''; ?>">
+      <?php echo l(t('!icon '.$menu_item['link']['link_title'].' !caret', array('!caret' => (!empty($menu_item['below']) && $index == 1 ? '<b class="caret"></b>' : ''), '!icon' => BootstrapBlocks_menu_get_link_icon($menu_item['link']['link_title'], $block_name))), $menu_item['link']['link_path'], 
+        array(
+          'html' => TRUE,
+          'attributes' => array(
+            'class' => (!empty($menu_item['below']) ? array('dropdown-toggle') : array()),
+            'data-toggle' => (!empty($menu_item['below']) ? 'dropdown' : ''),
+          ),
+        ));
+        if (!empty($menu_item['below']) && $index < 3) {
+          BootstrapBlocks_print_submenu_items($menu_item['below'], $block_name, ($index + 1));
+        } ?>
+    </li>
+<?php }
+
+/**
+ * Returns HTML for a dropdown menu ul
+ * @param $menu_item
+ *   The menu item below returned from menu_tree_all_data
+ * @param $block_name
+ *   The name of the block this menu belongs too
+ * @param $index
+ *   Int telling us what level we are on
+ */
+function BootstrapBlocks_print_submenu_items($menu_item, $block_name, $index = 1) { ?>
+  <ul class="dropdown-menu" role="menu">
+    <?php foreach($menu_item as $submenu_item): ?>
+      <?php BootstrapBlocks_print_menu_items($submenu_item, $block_name, $index); ?>
+    <?php endforeach; ?>
+  </ul>
+<? }
 
 /**
  * Implimenting hook_form
@@ -157,27 +202,31 @@ function BootstrapBlocks_menu_get_link_icon($link_title, $block_name = '') {
  *   Name of menu to print as a select list
  */
 function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) {
-   
-   //Grab the menu items for the passed in menu name
-   $menu_items =  menu_tree_all_data($menu_name);
-   
-   //Construct a menu array for the form
-   $menu = array();
-   $menu[''] = t('Go to...');
-   foreach ($menu_items as $menu_item) {
-     $menu[url($menu_item['link']['link_path'])] = $menu_item['link']['link_title'];
-   }
-   
-   //Add the javascript to handle the on-click events
-   drupal_add_js('
-    jQuery(document).ready(function () { 
+  //Grab the menu items for the passed in menu name
+  $menu =  menu_tree_all_data($menu_name);
+
+  //Allow the i18n module to translate
+  if (module_exists('i18n_menu')) {
+    $menu = i18n_menu_localize_tree($menu);
+  }
+
+  //Construct a select list for the form
+  $select = array();
+  $select[''] = t('Go to...');
+  foreach ($menu as $item) {
+   $select[url($item['link']['link_path'])] = $item['link']['link_title'];
+  }
+
+  //Add the javascript to handle the on-click events
+  drupal_add_js('
+    jQuery(document).ready(function () {
       jQuery(".mobile-select-menu select").change(function() {
         window.location = $(this).find("option:selected").val();
       });
     });',
     array(
-      'type' => 'inline', 
-      'scope' => 'footer', 
+      'type' => 'inline',
+      'scope' => 'footer',
       'weight' => 5
     )
   );
@@ -188,9 +237,9 @@ function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) 
   );
   $form['select'] = array(
     '#type' => 'select',
-    '#options' => $menu,
+    '#options' => $select,
   );
-  
+
   return $form;
 }
 
