@@ -164,9 +164,16 @@ function BootstrapBlocks_menu_get_link_icon($link_title, $block_name = '') {
  */
 function BootstrapBlocks_print_menu_items($menu_item, $block_name, $index = 1) {
   //Make sure this isn't a disabled item, if it's not build the list element and any sub list elements up to $index 2
-  if ($menu_item['link']['hidden'] != 1): ?>
-    <li class="<?php echo (!empty($menu_item['below']) ? 'dropdown' : ''); echo (($index == 2) ? '-submenu' : ''); echo BootstrapBlocks_menu_is_active($menu_item['link']['link_path']) ? ' active': ''; ?>">
-      <?php echo l(t('!icon '.$menu_item['link']['link_title'].' !caret', array('!caret' => (!empty($menu_item['below']) && $index == 1 ? '<b class="caret"></b>' : ''), '!icon' => BootstrapBlocks_menu_get_link_icon($menu_item['link']['link_title'], $block_name))), $menu_item['link']['link_path'], 
+  if ($menu_item['link']['hidden'] != 1) {
+
+    //Assemble the classes
+    $classes = '';
+    if (!empty($menu_item['below'])) { $classes .= 'dropdown'; }
+    if ($index == 2) { $classes .= '-submenu'; }
+    if (BootstrapBlocks_menu_is_active($menu_item['link']['link_path'])) { $classes .= ' active'; }
+
+    $output = '<li class="'.$classes.'">';
+    $output .= l(t('!icon '.$menu_item['link']['link_title'].' !caret', array('!caret' => (!empty($menu_item['below']) && $index == 1 ? '<b class="caret"></b>' : ''), '!icon' => BootstrapBlocks_menu_get_link_icon($menu_item['link']['link_title'], $block_name))), $menu_item['link']['link_path'], 
         array(
           'html' => TRUE,
           'attributes' => array(
@@ -175,10 +182,11 @@ function BootstrapBlocks_print_menu_items($menu_item, $block_name, $index = 1) {
           ),
         ));
         if (!empty($menu_item['below']) && $index < 3) {
-          BootstrapBlocks_print_submenu_items($menu_item['below'], $block_name, ($index + 1));
-        } ?>
-    </li>
-  <?php endif;
+          $output .= BootstrapBlocks_print_submenu_items($menu_item['below'], $block_name, ($index + 1));
+        }
+    $output .= '</li>';
+    return $output;
+  }
 }
 
 /**
@@ -190,13 +198,15 @@ function BootstrapBlocks_print_menu_items($menu_item, $block_name, $index = 1) {
  * @param $index
  *   Int telling us what level we are on
  */
-function BootstrapBlocks_print_submenu_items($menu_item, $block_name, $index = 1) { ?>
-  <ul class="dropdown-menu" role="menu">
-    <?php foreach($menu_item as $submenu_item): ?>
-      <?php BootstrapBlocks_print_menu_items($submenu_item, $block_name, $index); ?>
-    <?php endforeach; ?>
-  </ul>
-<? }
+function BootstrapBlocks_print_submenu_items($menu_item, $block_name, $index = 1) {
+  $output = '<ul class="dropdown-menu" role="menu">';
+  foreach($menu_item as $submenu_item) {
+    $output .= BootstrapBlocks_print_menu_items($submenu_item, $block_name, $index);
+  }
+  $output .= '</ul>';
+
+  return $output;
+}
 
 /**
  * Implimenting hook_form
