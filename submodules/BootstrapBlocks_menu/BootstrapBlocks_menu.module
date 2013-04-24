@@ -234,7 +234,7 @@ function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) 
   drupal_add_js('
     jQuery(document).ready(function () {
       jQuery(".mobile-select-menu select").change(function() {
-        window.location = $(this).find("option:selected").val();
+        window.location = jQuery(this).find("option:selected").val();
       });
     });',
     array(
