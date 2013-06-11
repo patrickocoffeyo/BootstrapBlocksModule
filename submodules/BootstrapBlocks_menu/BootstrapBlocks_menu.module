@@ -128,6 +128,12 @@ function BootstrapBlocks_menu_is_active($path) {
   if ($path == $_GET['q'] || (drupal_is_front_page() && $path === '<front>')) {
     return TRUE;
   }
+  
+  foreach (menu_get_active_trail() as $link) {
+    if ($path === $link['href']) {
+      return TRUE;
+    } 
+  }
 
   return FALSE;
 }
