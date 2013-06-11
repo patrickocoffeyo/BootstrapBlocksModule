@@ -129,8 +129,8 @@ function BootstrapBlocks_menu_is_active($path) {
     return TRUE;
   }
   
-  foreach (menu_get_active_trail() as $link) {
-    if ($path === $link['href']) {
+  foreach (menu_get_active_trail() as $key => $link) {
+    if ($path === $link['href'] && $key !== 0) {
       return TRUE;
     } 
   }
