@@ -3,7 +3,7 @@
 include('includes/admin.inc');
 
 /**
- * Impliments hook_menu
+ * Implements hook_menu
  */
 function BootstrapBlocks_menu_menu() {
   $items = array();
@@ -41,7 +41,7 @@ function BootstrapBlocks_menu_block_info() {
 }
 
 /**
- * Implimenting hook_block_view()
+ * Implements hook_block_view()
  */
 function BootstrapBlocks_menu_block_view($delta = '') {
   $block = array();
