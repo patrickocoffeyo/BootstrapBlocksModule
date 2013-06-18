@@ -215,7 +215,27 @@ function BootstrapBlocks_print_submenu_items($menu_item, $block_name, $index = 1
 }
 
 /**
- * Implimenting hook_form
+ * Recursive menu builder utility function.
+ * @param $menu 
+ *   Menu tree or subtree.
+ * @param &$select
+ *   Array of elements on which to append menu items.
+ * @param $separator
+ *   String repeated $depth times before each link title.
+ * @param $depth
+ *   Current depth - for recursion.
+ **/
+function BootstrapBlocks_menu_mobile_menu_build($menu, &$select = array(), $separator = "- ", $depth = 0) {
+  foreach ($menu as $item) {
+    $select[url($item['link']['link_path'])] = str_repeat($separator, $depth) . $item['link']['link_title'];
+    if (!empty($item['below'])) {
+      BootstrapBlocks_menu_mobile_menu_build($item['below'], $select, $separator, $depth + 1);
+    }
+  }
+};
+
+/**
+ * Implements hook_form
  * Form for the select list menu
  * @param $menu_name
  *   Name of menu to print as a select list
@@ -232,9 +252,7 @@ function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) 
   //Construct a select list for the form
   $select = array();
   $select[''] = t('Go to...');
-  foreach ($menu as $item) {
-   $select[url($item['link']['link_path'])] = $item['link']['link_title'];
-  }
+  BootstrapBlocks_menu_mobile_menu_build($menu, $select);
 
   //Add the javascript to handle the on-click events
   drupal_add_js('
@@ -250,11 +268,27 @@ function BootstrapBlocks_menu_select_menu_form($form, &$form_state, $menu_name) 
     )
   );
 
+  $trail = menu_get_active_trail();
+  $value = FALSE;
+  if (!empty($trail)) {
+    $active = array_pop($trail);
+    if (!empty($active)) {
+      $active_path = url($active['link_path']);
+      foreach ($select as $key => $link) {
+        if ($key === $active_path) {
+          $value = $key;
+          break;
+        }
+      }
+    }
+  }
+
   //Construct the form
   $form['#attributes'] = array(
     'class' => array('mobile-select-menu'),
   );
   $form['select'] = array(
+    '#value' => $value,
     '#type' => 'select',
     '#options' => $select,
   );
