@@ -5,7 +5,7 @@
 function BootstrapBlocks_navbar_install() {
   //Set some defaults
   variable_set('admin_navbar_menu', 'management');
-  variable_set('admin_navbar_classes', 'navbar-fixed-top');
+  variable_set('admin_navbar_classes', 'navbar-default navbar-fixed-top');
   variable_set('navbar_menu', 'main-menu');
   
   //Set default icons for Administration menu
